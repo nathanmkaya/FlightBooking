@@ -1,0 +1,20 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp"
+    tools:context="com.nathanmkaya.flightbooking.ui.fragments.ReservationsFragment">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/reservations_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@null"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:scrollbars="vertical"
+        tools:listitem="@layout/reserveation_item">
+
+    </android.support.v7.widget.RecyclerView>
+
+</FrameLayout>
