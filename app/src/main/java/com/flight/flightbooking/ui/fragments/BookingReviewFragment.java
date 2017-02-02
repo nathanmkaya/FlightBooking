@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.flight.flightbooking.R;
 import com.flight.flightbooking.model.Ticket;
@@ -76,6 +77,7 @@ public class BookingReviewFragment extends Fragment {
     public void proceed() {
         Ticket ticket = new Ticket(destination, currentLocation, departureDate, departureTime, airline);
         Ticket.saveTicket(ticket);
+        Toast.makeText(getContext(), "Reservation Added", Toast.LENGTH_SHORT).show();
     }
 
 }
