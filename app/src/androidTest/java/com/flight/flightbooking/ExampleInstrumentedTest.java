@@ -1,4 +1,4 @@
-package com.nathanmkaya.flightbooking;
+package com.flight.flightbooking;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

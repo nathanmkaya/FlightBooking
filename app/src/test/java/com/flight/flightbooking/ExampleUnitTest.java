@@ -1,4 +1,4 @@
-package com.nathanmkaya.flightbooking;
+package com.flight.flightbooking;
 
 import org.junit.Test;
 
