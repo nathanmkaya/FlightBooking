@@ -10,15 +10,22 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.flight.flightbooking.R;
+import com.flight.flightbooking.bus.Delete;
+import com.flight.flightbooking.model.Ticket;
 import com.flight.flightbooking.ui.fragments.BookingFragment;
 import com.flight.flightbooking.ui.fragments.ReservationsFragment;
 import com.flight.flightbooking.utils.PrefUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,6 +41,19 @@ public class BaseActivity extends AppCompatActivity
     NavigationView navigationView;
 
     FragmentTransaction manager;
+    private ActionMode actionMode;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,5 +142,47 @@ public class BaseActivity extends AppCompatActivity
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private ActionMode.Callback callback(final Ticket ticket) {
+        return new ActionMode.Callback() {
+            @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                MenuInflater inflater = mode.getMenuInflater();
+                inflater.inflate(R.menu.reservations_menu, menu);
+                return true;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.delete:
+                        Ticket.deleteTicket(ticket);
+                        actionMode.finish();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode mode) {
+                actionMode = null;
+            }
+        };
+    }
+
+    @Subscribe
+    public void deleteAction(Delete delete) {
+        if (actionMode == null) {
+            actionMode = startSupportActionMode(callback(delete.ticket));
+        } else {
+            actionMode = null;
+        }
     }
 }

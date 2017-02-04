@@ -22,6 +22,9 @@ import io.realm.RealmRecyclerViewAdapter;
 
 public class ReservationsAdapter extends RealmRecyclerViewAdapter<Ticket, ReservationsAdapter.ViewHolder> {
 
+    OnItemClickListener itemClickListener;
+    OnItemLongClickListener itemLongClickListener;
+
     public ReservationsAdapter(@NonNull Context context, @Nullable OrderedRealmCollection<Ticket> data, boolean autoUpdate) {
         super(context, data, autoUpdate);
     }
@@ -29,7 +32,20 @@ public class ReservationsAdapter extends RealmRecyclerViewAdapter<Ticket, Reserv
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.reserveation_item, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
+        final ViewHolder viewHolder = new ViewHolder(view);
+        /*view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                itemClickListener.onItemClick(view, viewHolder.getLayoutPosition());
+            }
+        });*/
+        view.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                itemLongClickListener.onItemLongClick(view, viewHolder.getLayoutPosition());
+                return true;
+            }
+        });
         return viewHolder;
     }
 
@@ -42,7 +58,23 @@ public class ReservationsAdapter extends RealmRecyclerViewAdapter<Ticket, Reserv
         holder.dateTimeView.setText(ticket.departureDate + " " + ticket.departureTime);
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
+    public void setOnItemClickListener(OnItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
+    }
+
+    public void setOnItemLongClickListener(OnItemLongClickListener itemLongClickListener) {
+        this.itemLongClickListener = itemLongClickListener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
+    public interface OnItemLongClickListener {
+        boolean onItemLongClick(View view, int position);
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.airline_view)
         TextView airlineView;
@@ -56,11 +88,6 @@ public class ReservationsAdapter extends RealmRecyclerViewAdapter<Ticket, Reserv
         public ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-        }
-
-        @Override
-        public boolean onLongClick(View v) {
-            return false;
         }
     }
 }

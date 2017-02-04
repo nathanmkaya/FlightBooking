@@ -2,6 +2,7 @@ package com.flight.flightbooking.model;
 
 import io.realm.Realm;
 import io.realm.RealmObject;
+import io.realm.RealmResults;
 
 public class Ticket extends RealmObject {
 
@@ -32,6 +33,20 @@ public class Ticket extends RealmObject {
         });
     }
 
-    public static void deleteTicket() {
+    public static void deleteTicket(final Ticket ticket) {
+        Realm realm = Realm.getDefaultInstance();
+        final RealmResults<Ticket> ticketRealmResults = realm.where(Ticket.class).findAll();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                Ticket ticket1 = ticketRealmResults.where()
+                        .equalTo("airline", ticket.airline)
+                        .equalTo("departure", ticket.departure)
+                        .equalTo("departureDate", ticket.departureDate)
+                        .equalTo("departureTime", ticket.departureTime)
+                        .equalTo("destination", ticket.destination).findFirst();
+                ticket1.deleteFromRealm();
+            }
+        });
     }
 }
