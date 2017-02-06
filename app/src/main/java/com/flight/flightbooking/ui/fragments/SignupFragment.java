@@ -3,6 +3,7 @@ package com.flight.flightbooking.ui.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +46,15 @@ public class SignupFragment extends Fragment {
 
     @OnClick(R.id.signup_btn)
     public void signup() {
-        EventBus.getDefault().post(new Signup(nameEditText.getText().toString(), passwdEditText.getText().toString()));
+        if(TextUtils.isEmpty(nameEditText.getText())){
+            nameEditText.setError("Please add a name");
+        }
+        else if(TextUtils.isEmpty(passwdEditText.getText())){
+            passwdEditText.setError("Please Type In a password");
+        }
+        else{
+            EventBus.getDefault().post(new Signup(nameEditText.getText().toString(), passwdEditText.getText().toString()));
+        }
     }
 
 }
