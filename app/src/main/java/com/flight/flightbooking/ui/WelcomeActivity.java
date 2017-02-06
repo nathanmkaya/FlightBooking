@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Toast;
 
 import com.flight.flightbooking.R;
 import com.flight.flightbooking.bus.Login;
@@ -132,6 +133,9 @@ public class WelcomeActivity extends AppCompatActivity {
             PrefUtils.setLoggedIn(this);
             startActivity(new Intent(this, BaseActivity.class));
             finish();
+        }
+        else{
+            Toast.makeText(this, "Wrong User Credentials", Toast.LENGTH_SHORT).show();
         }
     }
 
