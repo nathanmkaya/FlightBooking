@@ -49,6 +49,11 @@ public class User extends RealmObject {
     public static boolean checkUser(User user) {
         Realm realm = Realm.getDefaultInstance();
         RealmResults<User> users = realm.where(User.class).findAll();
-        return users.where().equalTo("name", user.name).equalTo("passwd", user.passwd).isValid();
+        for (User user1 : users) {
+            if (user.name.equals(user1.name) && user.passwd.equals(user1.passwd)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
