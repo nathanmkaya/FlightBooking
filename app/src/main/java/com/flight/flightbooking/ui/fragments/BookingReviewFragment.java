@@ -53,7 +53,7 @@ public class BookingReviewFragment extends Fragment {
             currentLocation = bundle.getString("currentLocation");
             departureTime = bundle.getString("departureTime");
             departureDate = bundle.getString("departureDate");
-            airline = bundle.getString("airline");
+            airline = bundle.getString("cost");
         }
     }
 

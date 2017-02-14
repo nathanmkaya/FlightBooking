@@ -23,5 +23,15 @@ public class App extends Application {
 
         // Android JSR310 Initialization
         AndroidThreeTen.init(this);
+
+        /*SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        if(!prefs.getBoolean("firstTime", false)) {
+            // run your one time code
+            Data.populate();
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("firstTime", true);
+            editor.commit();
+        }*/
+        Data.populate();
     }
 }
